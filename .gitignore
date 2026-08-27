@@ -6,3 +6,4 @@ data/
 *.zip
 .pytest_cache/
 wandb/
+*.pt
