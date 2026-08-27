@@ -8,7 +8,7 @@ DKT (LSTM) -> SAKT (transformer, in progress).
 
 | Model | Test AUC | Notes |
 |---|---|---|
-| (results land here as runs complete) | | |
+| Heuristic (smoothed user + item rates) | 0.7372 | 1/20 user sample: 4.93M rows, 19,639 users, 992K test rows, CPU |
 
 Split: chronological per user (first 80% train, last 20% test). All question
 statistics computed on train rows only. Numbers are reproducible via
