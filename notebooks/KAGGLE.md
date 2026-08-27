@@ -1,24 +1,19 @@
 # Running training on Kaggle
 
-1. kaggle.com -> Create -> Notebook. Right panel: Session options ->
-   Accelerator = GPU (P100 or T4).
-2. Right panel: Input -> **+ Add Input** -> search "Riiid Answer Correctness
-   Prediction" -> add the **competition** (trophy icon), not a user dataset.
-   Without this step nothing else works. NOTE: attaching an input (or
-   changing the accelerator) RESTARTS the session and wipes /kaggle/working,
-   so attach the input and set the GPU first, then run the cells below.
-3. First cell, and do not proceed until it lists train.csv:
+1. kaggle.com -> Create -> Notebook.
+2. Right panel FIRST (each of these restarts the session and wipes
+   /kaggle/working, so do them before running anything):
+   - Session options -> Accelerator = GPU (P100 or T4)
+   - Input -> + Add Input -> filter to **Competitions** -> add
+     "Riiid Answer Correctness Prediction"
+3. One cell, all absolute paths, safe to re-run:
 
-       !ls /kaggle/input/competitions/riiid-test-answer-prediction
+       !rm -rf /kaggle/working/knowledge-tracing
+       !git clone -q https://github.com/mattogun/knowledge-tracing.git /kaggle/working/knowledge-tracing
+       !pip install -q -e /kaggle/working/knowledge-tracing
+       !python /kaggle/working/knowledge-tracing/scripts/make_sample.py --csv /kaggle/input/competitions/riiid-test-answer-prediction/train.csv --out /kaggle/working/sample.parquet --mod 20
+       !python /kaggle/working/knowledge-tracing/scripts/train_dkt.py --parquet /kaggle/working/sample.parquet --epochs 3
 
-4. Then, each in its own cell (absolute path in the cd, so re-running a cell
-   never nests clones):
-
-       !git clone https://github.com/mattogun/knowledge-tracing.git
-       %cd /kaggle/working/knowledge-tracing
-       !pip install -e . -q
-       !python scripts/make_sample.py --csv /kaggle/input/competitions/riiid-test-answer-prediction/train.csv --out sample.parquet --mod 20
-       !python scripts/train_dkt.py --parquet sample.parquet --epochs 3
-
-5. Copy the final `dkt: test_auc=` line into the README results table, and
-   note the exact command plus Kaggle GPU type alongside it.
+4. Copy the final `dkt: test_auc=` line into the README results table with
+   the GPU type. Sanity: `import torch; torch.cuda.is_available()` must be
+   True or training silently runs on CPU and takes hours.
