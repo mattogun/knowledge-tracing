@@ -1,5 +1,7 @@
 # Knowledge Tracing on Riiid (101M interactions)
 
+![ci](https://github.com/mattogun/knowledge-tracing/actions/workflows/ci.yml/badge.svg)
+
 Predicting whether a learner answers the next question correctly, from their
 interaction history. Models: heuristic baseline -> logistic regression ->
 DKT (LSTM) -> SAKT (transformer, in progress).
