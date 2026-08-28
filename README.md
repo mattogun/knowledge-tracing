@@ -14,6 +14,10 @@ DKT (LSTM) -> SAKT (transformer, in progress).
 | Logistic regression (6 leak-free features) | 0.7384 | same split; item_rate and user_trailing_acc dominate the weights |
 | DKT (LSTM, 3 epochs) | **0.7468** | Kaggle T4, same sample and split; AUC still rising at epoch 3 |
 
+DKT learning curve (test AUC by epoch): 0.6967 -> 0.7390 -> 0.7468. The model
+is below the counting baseline after one epoch and clear of every baseline by
+three; the curve had not plateaued, so longer training is scheduled next.
+
 Split: chronological per user (first 80% train, last 20% test). All question
 statistics computed on train rows only. Numbers are reproducible via
 `scripts/` on the Kaggle `riiid-test-answer-prediction` data.
